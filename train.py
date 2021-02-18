@@ -21,8 +21,8 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 10
 NUM_EPOCHS = 3
 NUM_WORKERS = 4
-IMAGE_HEIGHT = 160  # 1280 originally
-IMAGE_WIDTH = 240  # 1918 originally
+IMAGE_HEIGHT = 160*3  # 1280 originally
+IMAGE_WIDTH = 240*3  # 1918 originally
 PIN_MEMORY = True
 LOAD_MODEL = True
 TRAIN_IMG_DIR = "data/train_images/"
@@ -127,7 +127,7 @@ def main():
 def predict():
     print('asdasdasd')
     model = UNET(in_channels=3, out_channels=1).to(DEVICE)
-    load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
+    load_checkpoint(torch.load("my_checkpoint.pth.tar", map_location=torch.device('cpu')), model)
 
     train_transform = A.Compose(
         [
@@ -219,8 +219,7 @@ def data_test():
         plt.imshow(y[0].numpy())
         plt.show()
 
-
 if __name__ == "__main__":
-    main()
-    # predict()
+    # main()
+    predict()
     # data_test()
